@@ -4,7 +4,62 @@ import static java.lang.Math.log;
 import static java.lang.Math.*;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
+
+/**
+ * @author vika
+ * @version 1.0
+ */
+class WrapperString{
+    private String stroka;
+
+    public WrapperString(String stroka) {
+        this.stroka = stroka;
+    }
+
+    public String getStroka() {
+        return stroka;
+    }
+
+    public void setStroka(String stroka) {
+        this.stroka = stroka;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WrapperString that = (WrapperString) o;
+        return Objects.equals(stroka, that.stroka);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stroka);
+    }
+
+    @Override
+    public String toString() {
+        return "WrapperString{" +
+                "stroka='" + stroka + '\'' +
+                '}';
+    }
+
+    /**
+     *
+     * @param oldchar
+     * @param newchar
+     */
+    public void replace(char oldchar, char newchar) {
+        stroka = stroka.replace(oldchar, newchar);
+    }
+
+    public void delete(char charToDelete) {
+        stroka = stroka.replace(String.valueOf(charToDelete), "");
+    }
+}
+
 
 public class JavaTest {
     static int sint;
@@ -16,7 +71,13 @@ public class JavaTest {
         wer = 0;
         ops = 0;
     }
+    /**
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
+        /**
+         * @value: d
+         * */
         char word = 'd';
         int i = 1;
         short u = 2;
@@ -167,9 +228,60 @@ public class JavaTest {
         System.out.println(length);
         System.out.println(replacedStr);
 
-        char[][] c1;
-        char[] c2[];
-        char c3[][];
+         char[][] c1;
+        //char[] c2[];
+        //char c3[][];
+        c1 = new char[3][];
+        c1[0] = new char[1];
+        c1[1] = new char[2];
+        c1[2] = new char[3];
+        System.out.println(c1.length);
+        System.out.println(c1[0].length);
+        System.out.println(c1[1].length);
+        System.out.println(c1[2].length);
+
+        char[][] c2 = { {'a', 'b', 'c'}, {'d', 'e', 'f', 'g'}, {'h', 'i'} };
+        char[][] c3 = { {'a', 'b', 'c'}, {'d', 'r', 'f', 'g'}, {'h', 'i'} };
+        boolean comRez = c2 == c3;
+        System.out.println(comRez);
+        c2 = c3;
+        comRez = c2 == c3;
+        System.out.println(comRez);
+        for (char[] row : c2) {
+            for (char element : row) {
+                System.out.print(element + " ");
+            }
+            System.out.println();
+        }
+
+        int[] array = {1, 2, 3};
+        // System.out.println(array[3]); // ArrayIndexOutOfBoundsException
+
+
+        WrapperString wrapperString = new WrapperString("Hello, world!");
+
+
+        System.out.println(wrapperString.getStroka());
+        wrapperString.replace('H', 'u');
+        System.out.println(wrapperString.getStroka());
+        WrapperString wrapper = new WrapperString("Hello, world!") {
+            @Override
+            public void replace(char oldchar, char newchar) {
+                setStroka(getStroka().replace(oldchar, newchar));
+            }
+
+            public void delete(char charToDelete) {
+                setStroka(getStroka().replace(String.valueOf(charToDelete), ""));
+            }
+        };
+
+        wrapper.replace('o', 'x');
+
+        System.out.println(wrapper.getStroka());
+        wrapper.delete('x');
+
+        System.out.println(wrapper.getStroka());
+
     }
 }
 
